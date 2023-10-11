@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 
-export default function App() {
+const App = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <ImageBackground
+        source={require('./assets/tela0.jpg')}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.overlay}>
+          <Text style={styles.clockText}>{currentTime.toLocaleTimeString()}</Text>
+        </View>
+      </ImageBackground>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  clockText: {
+    fontSize: 90,
+    color: 'white',
+    marginTop: '-100%'
   },
 });
+
+export default App;
